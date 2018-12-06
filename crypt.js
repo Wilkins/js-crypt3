@@ -390,6 +390,14 @@ function encrypt(block) {
 **************************************************************************/
 function crypt(pw, salt)
 {
+	/* If a string was given, convert it to Array */
+	if(! Array.isArray(pw)) {
+		pw = toUTF8Array(pw);
+	}
+	/* If a string was given, convert it to Array */
+	if(! Array.isArray(salt)) {
+		salt = toUTF8Array(salt);
+	}
 	if( salt.length != 2 ) {
 		throw "Length of salt must be 2 (!= " + salt.length + ")";
 	}
@@ -479,6 +487,16 @@ function crypt(pw, salt)
 	}
 
 	return String.fromCharCode.apply(null, iobuf.slice(0,i+2));
+}
+
+// Helper function that convert string to utf8 byte array.
+function toUTF8Array(str) {
+	var utf8 = unescape( encodeURIComponent(str) );
+	var arr = [];
+	for (var i = 0; i < utf8.length; i++) {
+		arr.push(utf8.charCodeAt(i));
+	}
+	return arr;
 }
 
 return crypt(pw,salt);
